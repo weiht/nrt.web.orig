@@ -10,15 +10,29 @@
     	http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
+	<mvc:annotation-driven />
+
+    <mvc:resources mapping="/css/**" location="#{systemProperties['repo.dir']}/static/css/" />
+    <mvc:resources mapping="/js/**" location="#{systemProperties['repo.dir']}/static/js/" />
+    <mvc:resources mapping="/fonts/**" location="#{systemProperties['repo.dir']}/static/fonts/" />
+    <mvc:resources mapping="/images/**" location="#{systemProperties['repo.dir']}/static/images/" />
+
+    <context:component-scan base-package="org.necros.web" />
+
 	<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
-  		<property name="resourceLoaderPath" value="#{preferenceService.stringValue('/velocity/template/dir', '/WEB-INF/templates/')}"/>
-  		<property name="configLocation" value="#{preferenceService.stringValue('/velocity/template/dir', '/WEB-INF/velocity.properties')}"/>
+  		<property name="resourceLoaderPath" value="#{preferenceService.stringValue('/velocity/root/dir', '/WEB-INF/')}templates/"/>
+  		<property name="configLocation" value="#{preferenceService.stringValue('/velocity/root/dir', '/WEB-INF/')}velocity.properties"/>
 	</bean>
  
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+	  	<property name="requestContextAttribute" value="rc"/>
+        <property name="contentType" value="text/html;charset=UTF-8" />
+        <property name="dateToolAttribute" value="dateTool" />
+        <property name="numberToolAttribute" value="numberTool" />
+        <property name="exposeRequestAttributes" value="true" />
+        <property name="exposeSessionAttributes" value="true" />
 	  	<property name="cache" value="true"/>
-		<property name="prefix" value=""/>
-		<property name="suffix" value=".vm"/>
+		<property name="suffix" value=""/>
 	</bean>
 
 </beans>

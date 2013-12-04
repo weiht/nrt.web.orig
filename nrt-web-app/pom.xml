@@ -10,6 +10,12 @@
   <packaging>war</packaging>
   <dependencies>
     <dependency>
+      <groupId>org.necros.nrt.web</groupId>
+      <artifactId>nrt-web-core</artifactId>
+      <version>${nrt-web-version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>org.necros.nrt.core</groupId>
       <artifactId>nrt-core-util</artifactId>
       <version>${nrt-core-version}</version>
