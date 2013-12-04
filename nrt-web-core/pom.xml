@@ -1,0 +1,18 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>nrt-web-core</artifactId>
+  <name>core</name>
+  <parent>
+    <groupId>org.necros.nrt.web</groupId>
+    <artifactId>nrt-web</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,12 @@
+<ehcache name="org.necros.cache">
+
+<diskStore path="java.io.tmpdir"/>
+<cache name="org.necros.methodResultCached"
+	maxElementsInMemory="10000"
+	eternal="false"
+	timeToIdleSeconds="300"
+	timeToLiveSeconds="600"
+	overflowToDisk="true"
+	/>
+
+</ehcache>
