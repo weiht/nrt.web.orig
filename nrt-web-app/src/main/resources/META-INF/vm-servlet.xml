@@ -26,6 +26,7 @@
         <property name="numberToolAttribute" value="numberTool" />
         <property name="exposeRequestAttributes" value="true" />
         <property name="exposeSessionAttributes" value="true" />
+        <property name="exposeSpringMacroHelpers" value="true" />
 	  	<property name="cache" value="true"/>
 		<property name="suffix" value=""/>
 	</bean>
