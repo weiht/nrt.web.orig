@@ -12,11 +12,6 @@
 
 	<mvc:annotation-driven />
 
-    <mvc:resources mapping="/css/**" location="#{systemProperties['repo.dir']}/static/css/" />
-    <mvc:resources mapping="/js/**" location="#{systemProperties['repo.dir']}/static/js/" />
-    <mvc:resources mapping="/fonts/**" location="#{systemProperties['repo.dir']}/static/fonts/" />
-    <mvc:resources mapping="/images/**" location="#{systemProperties['repo.dir']}/static/images/" />
-
     <context:component-scan base-package="org.necros.web" />
 
 	<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
