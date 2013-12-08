@@ -31,4 +31,13 @@
 		<property name="suffix" value=""/>
 	</bean>
 
+	<bean name="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>#{preferenceService.stringValue('/i18n/root/dir', '/WEB-INF/')}messages</value>
+			</list>
+		</property>
+		<property name="useCodeAsDefaultMessage" value="true" />
+		<property name="cacheSeconds" value="#{preferenceService.intValue('/i18n/cache/seconds', 10)}"></property>
+	</bean>
 </beans>
