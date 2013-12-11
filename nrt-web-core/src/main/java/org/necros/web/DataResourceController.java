@@ -3,6 +3,7 @@ package org.necros.web;
 import java.util.Map;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.HandlerMapping;
@@ -29,6 +31,8 @@ import org.necros.data.MetaDataAccessException;
 
 @Controller
 public class DataResourceController {
+	private static final Logger logger = LoggerFactory.getLogger(DataResourceController.class);
+
 	private static final String MAP_PREFIX = "/entities";
 	private static final String ENTITY_PREFIX = "/{entity}";
 	private static final String ID_PREFIX = "/{id}";
@@ -48,24 +52,39 @@ public class DataResourceController {
 	@RequestMapping(value=PKG_LIST_PREFIX, method=RequestMethod.GET)
 	public @ResponseBody List<MetaPackage> listPackages(
 		@PathVariable("path") String path,
-		HttpServletRequest request, HttpServletResponse response) {
-		return StringUtils.hasText(path) ? metaPackageManager.root() : metaPackageManager.children(path);
+		HttpServletRequest request, HttpServletResponse response) throws ServletException {
+		try {
+			return StringUtils.hasText(path) ? metaPackageManager.root() : metaPackageManager.children(path);
+		} catch (Exception ex) {
+			logger.warn("Error retrieving packges: {}\n {}", path, ex);
+			throw new ServletException(ex);
+		}
 	}
 
 	@RequestMapping(value=PKG_PREFIX, method=RequestMethod.POST)
 	public @ResponseBody MetaPackage addPackage(
-		@ModelAttribute MetaPackage pkg,
+		@RequestBody MetaPackage pkg,
 		HttpServletRequest request, HttpServletResponse response)
 		throws MetaDataAccessException {
-		return metaPackageManager.add(pkg);
+		try {
+			return metaPackageManager.add(pkg);
+		} catch (MetaDataAccessException e) {
+			logger.error("Error saving package: {}\n{}", pkg, e);
+			throw e;
+		}
 	}
 
 	@RequestMapping(value=PKG_PREFIX + PATH_PREFIX, method=RequestMethod.PUT)
 	public @ResponseBody MetaPackage modifyPackage(
-		@PathVariable("path") String path, @ModelAttribute MetaPackage pkg,
+		@PathVariable("path") String path, @RequestBody MetaPackage pkg,
 		HttpServletRequest request, HttpServletResponse response)
 		throws MetaDataAccessException {
-		return metaPackageManager.updateDescription(pkg);
+		try {
+			return metaPackageManager.updateDescription(pkg);
+		} catch (MetaDataAccessException e) {
+			logger.error("Error saving package: {}\n{}", pkg, e);
+			throw e;
+		}
 	}
 
 	@RequestMapping(value=PKG_PREFIX + PATH_PREFIX, method=RequestMethod.DELETE)
@@ -73,7 +92,12 @@ public class DataResourceController {
 		@PathVariable("path") String path,
 		HttpServletRequest request, HttpServletResponse response)
 		throws MetaDataAccessException {
-		return metaPackageManager.remove(path);
+		try {
+			return metaPackageManager.remove(path);
+		} catch (MetaDataAccessException e) {
+			logger.error("Error saving package: {}\n{}", path, e);
+			throw e;
+		}
 	}
 
 	@RequestMapping(value=MAP_PREFIX + ENTITY_PREFIX + ID_PREFIX, method=RequestMethod.GET)
