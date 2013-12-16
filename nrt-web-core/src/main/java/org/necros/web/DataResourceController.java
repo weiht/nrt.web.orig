@@ -40,7 +40,7 @@ public class DataResourceController {
 	private static final String PKG_LIST_PREFIX = "/packages";
 	private static final String CLS_PREFIX = "/class";
 	private static final String CLS_LIST_PREFIX = "/classes";
-	private static final String PATH_PREFIX = "/{path}";
+	private static final String PATH_PREFIX = "/{path:.+}";
 
 //	@Resource(name="mapDAO")
 	private MapDAO dao;
@@ -64,6 +64,7 @@ public class DataResourceController {
 	public @ResponseBody List<MetaPackage> listPackages(
 		@PathVariable("path") String path,
 		HttpServletRequest request, HttpServletResponse response) throws ServletException {
+		logger.debug("Retrieving children of [{}]...", path);
 		try {
 			return StringUtils.hasText(path) ? metaPackageManager.root() : metaPackageManager.children(path);
 		} catch (Exception ex) {
