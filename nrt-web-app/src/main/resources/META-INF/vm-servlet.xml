@@ -40,4 +40,28 @@
 		<property name="useCodeAsDefaultMessage" value="true" />
 		<property name="cacheSeconds" value="#{preferenceService.intValue('/i18n/cache/seconds', 10)}"></property>
 	</bean>
+
+<bean name="viewTransactionInterceptor"
+	class="org.springframework.transaction.interceptor.TransactionInterceptor">
+	<property name="transactionManager" ref="transactionManagerBean" />
+	<property name="transactionAttributes">
+		<props>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+		</props>
+	</property>
+</bean>
+
+<bean
+	class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+	<property name="beanNames">
+		<list>
+			<value>*Controller</value>
+		</list>
+	</property>
+	<property name="interceptorNames">
+		<list>
+			<value>viewTransactionInterceptor</value>
+		</list>
+	</property>
+</bean>
 </beans>

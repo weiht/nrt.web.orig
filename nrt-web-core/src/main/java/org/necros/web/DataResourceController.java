@@ -51,6 +51,17 @@ public class DataResourceController {
 
 	@RequestMapping(value=PKG_LIST_PREFIX, method=RequestMethod.GET)
 	public @ResponseBody List<MetaPackage> listPackages(
+		HttpServletRequest request, HttpServletResponse response) throws ServletException {
+		try {
+			return metaPackageManager.root();
+		} catch (Exception ex) {
+			logger.warn("Error retrieving root packges: \n {}", ex);
+			throw new ServletException(ex);
+		}
+	}
+
+	@RequestMapping(value=PKG_LIST_PREFIX + PATH_PREFIX, method=RequestMethod.GET)
+	public @ResponseBody List<MetaPackage> listPackages(
 		@PathVariable("path") String path,
 		HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		try {

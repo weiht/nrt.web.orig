@@ -13,4 +13,28 @@
 	<mvc:annotation-driven />
 
     <context:component-scan base-package="org.necros.web" />
+
+<bean name="viewTransactionInterceptor"
+	class="org.springframework.transaction.interceptor.TransactionInterceptor">
+	<property name="transactionManager" ref="transactionManagerBean" />
+	<property name="transactionAttributes">
+		<props>
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+		</props>
+	</property>
+</bean>
+
+<bean
+	class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+	<property name="beanNames">
+		<list>
+			<value>*Controller</value>
+		</list>
+	</property>
+	<property name="interceptorNames">
+		<list>
+			<value>viewTransactionInterceptor</value>
+		</list>
+	</property>
+</bean>
 </beans>
