@@ -66,7 +66,7 @@ public class DataResourceController {
 		HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		logger.debug("Retrieving children of [{}]...", path);
 		try {
-			return StringUtils.hasText(path) ? metaPackageManager.root() : metaPackageManager.children(path);
+			return !StringUtils.hasText(path) ? metaPackageManager.root() : metaPackageManager.children(path);
 		} catch (Exception ex) {
 			logger.warn("Error retrieving packges: {}\n {}", path, ex);
 			throw new ServletException(ex);
