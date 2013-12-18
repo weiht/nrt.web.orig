@@ -50,7 +50,7 @@ public class DataResourceController {
 	private MetaPackageManager metaPackageManager;
 
 	@RequestMapping(value=PKG_LIST_PREFIX, method=RequestMethod.GET)
-	public @ResponseBody List<MetaPackage> listPackages(
+	public @ResponseBody List<MetaPackage> rootPackages(
 		HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		try {
 			return metaPackageManager.root();
@@ -61,7 +61,7 @@ public class DataResourceController {
 	}
 
 	@RequestMapping(value=PKG_LIST_PREFIX + PATH_PREFIX, method=RequestMethod.GET)
-	public @ResponseBody List<MetaPackage> listPackages(
+	public @ResponseBody List<MetaPackage> childPackages(
 		@PathVariable("path") String path,
 		HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		logger.debug("Retrieving children of [{}]...", path);
@@ -86,9 +86,9 @@ public class DataResourceController {
 		}
 	}
 
-	@RequestMapping(value=PKG_PREFIX + PATH_PREFIX, method=RequestMethod.PUT)
+	@RequestMapping(value=PKG_PREFIX, method=RequestMethod.PUT)
 	public @ResponseBody MetaPackage modifyPackage(
-		@PathVariable("path") String path, @RequestBody MetaPackage pkg,
+		@RequestBody MetaPackage pkg,
 		HttpServletRequest request, HttpServletResponse response)
 		throws MetaDataAccessException {
 		try {
@@ -100,7 +100,7 @@ public class DataResourceController {
 	}
 
 	@RequestMapping(value=PKG_PREFIX + PATH_PREFIX, method=RequestMethod.DELETE)
-	public @ResponseBody MetaPackage modifyPackage(
+	public @ResponseBody MetaPackage removePackage(
 		@PathVariable("path") String path,
 		HttpServletRequest request, HttpServletResponse response)
 		throws MetaDataAccessException {
@@ -110,6 +110,13 @@ public class DataResourceController {
 			logger.error("Error saving package: {}\n{}", path, e);
 			throw e;
 		}
+	}
+
+	@RequestMapping(value=PKG_PREFIX + PATH_PREFIX, method=RequestMethod.GET)
+	public @ResponseBody MetaPackage getPackage(
+		@PathVariable("path") String path,
+		HttpServletRequest request, HttpServletResponse response) {
+		return metaPackageManager.get(path);
 	}
 
 	@RequestMapping(value=MAP_PREFIX + ENTITY_PREFIX + ID_PREFIX, method=RequestMethod.GET)

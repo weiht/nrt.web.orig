@@ -11,6 +11,7 @@ public class VelocityController {
 	@RequestMapping(value="/**")
 	public String doVelocity(HttpServletRequest request) {
 		String path = (String) request.getAttribute( HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE );
+		request.setAttribute("request", request);
 		return path;
 	}
 }
