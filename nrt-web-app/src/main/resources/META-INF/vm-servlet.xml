@@ -14,6 +14,17 @@
 
     <context:component-scan base-package="org.necros.web" />
 
+	<bean id="classCache" class="org.necros.util.ClassCache">
+	</bean>
+	
+	<bean id="requestUtils" class="org.necros.util.RequestUtils">
+		<property name="classCache" ref="classCache"></property>
+	</bean>
+	
+	<bean id="jsonUtils" class="org.necros.util.JsonUtils">
+		<property name="classCache" ref="classCache"></property>
+	</bean>
+
 	<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
   		<property name="resourceLoaderPath" value="#{preferenceService.stringValue('/velocity/root/dir', '/WEB-INF/')}templates/"/>
   		<property name="configLocation" value="#{preferenceService.stringValue('/velocity/root/dir', '/WEB-INF/')}velocity.properties"/>
