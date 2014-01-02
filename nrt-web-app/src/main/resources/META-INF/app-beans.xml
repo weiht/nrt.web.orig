@@ -68,4 +68,9 @@
 	</property>
 </bean>
 
+<bean parent="cascadingPreferenceServiceInjector">
+	<property name="zIndex" value="10"></property>
+	<property name="service" ref="preferenceManager"></property>
+</bean>
+
 </beans>

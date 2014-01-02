@@ -119,6 +119,76 @@ public class DataResourceController {
 		return metaPackageManager.get(path);
 	}
 
+	@RequestMapping(value=CLS_LIST_PREFIX, method=RequestMethod.GET)
+	public @ResponseBody List<MetaClass> rootClasses(
+		HttpServletRequest request, HttpServletResponse response) throws ServletException {
+		try {
+			return metaClassManager.all(null);
+		} catch (Exception ex) {
+			logger.warn("Error retrieving root classes: \n {}", ex);
+			throw new ServletException(ex);
+		}
+	}
+
+	@RequestMapping(value=CLS_LIST_PREFIX + PATH_PREFIX, method=RequestMethod.GET)
+	public @ResponseBody List<MetaClass> childClasses(
+		@PathVariable("path") String path,
+		HttpServletRequest request, HttpServletResponse response) throws ServletException {
+		logger.debug("Retrieving child classes of [{}]...", path);
+		try {
+			return !StringUtils.hasText(path) ? metaClassManager.all(null) : metaClassManager.all(path);
+		} catch (Exception ex) {
+			logger.warn("Error retrieving classes: {}\n {}", path, ex);
+			throw new ServletException(ex);
+		}
+	}
+
+	@RequestMapping(value=CLS_PREFIX, method=RequestMethod.POST)
+	public @ResponseBody MetaClass addClass(
+		@RequestBody MetaClass cls,
+		HttpServletRequest request, HttpServletResponse response)
+		throws MetaDataAccessException {
+		try {
+			return metaClassManager.add(cls);
+		} catch (MetaDataAccessException e) {
+			logger.error("Error saving class: {}\n{}", cls, e);
+			throw e;
+		}
+	}
+
+	@RequestMapping(value=CLS_PREFIX, method=RequestMethod.PUT)
+	public @ResponseBody MetaClass modifyClass(
+		@RequestBody MetaClass cls,
+		HttpServletRequest request, HttpServletResponse response)
+		throws MetaDataAccessException {
+		try {
+			return metaClassManager.updateInfo(cls);
+		} catch (MetaDataAccessException e) {
+			logger.error("Error saving class: {}\n{}", cls, e);
+			throw e;
+		}
+	}
+
+	@RequestMapping(value=CLS_PREFIX + ID_PREFIX, method=RequestMethod.DELETE)
+	public @ResponseBody MetaClass removeClass(
+		@PathVariable("id") String id,
+		HttpServletRequest request, HttpServletResponse response)
+		throws MetaDataAccessException {
+		try {
+			return metaClassManager.remove(id);
+		} catch (MetaDataAccessException e) {
+			logger.error("Error saving package: {}\n{}", id, e);
+			throw e;
+		}
+	}
+
+	@RequestMapping(value=CLS_PREFIX + ID_PREFIX, method=RequestMethod.GET)
+	public @ResponseBody MetaClass getClass(
+		@PathVariable("id") String id,
+		HttpServletRequest request, HttpServletResponse response) {
+		return metaClassManager.get(id);
+	}
+
 	@RequestMapping(value=MAP_PREFIX + ENTITY_PREFIX + ID_PREFIX, method=RequestMethod.GET)
 	public @ResponseBody Map<String, Object> getById(
 			@PathVariable("entity") String entityName,

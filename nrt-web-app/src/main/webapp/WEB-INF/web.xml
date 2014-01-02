@@ -55,6 +55,20 @@
     <servlet-name>restServlet</servlet-name>
     <url-pattern>/rs/*</url-pattern>
   </servlet-mapping>
+
+  <filter>
+    <filter-name>restSessionFilter</filter-name>
+    <filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
+    <init-param>
+      <param-name>sessionFactoryBeanName</param-name>
+      <param-value>sessionFactory</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>restSessionFilter</filter-name>
+    <url-pattern>/rs/*</url-pattern>
+  </filter-mapping>
   
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
